@@ -51,6 +51,7 @@ public class AddBid extends Form {
         btnajout.addActionListener((e) -> {
             BidService bidService = new BidService();
             Bid bid = new Bid(Integer.valueOf(textDeliveryTime.getText()), Integer.valueOf(textMinimalRate.getText()));
+            
             bidService.addBid(bid);
             textDeliveryTime.setText("");
             //textDeliveryTime.setUIID("addField");

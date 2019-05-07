@@ -45,7 +45,7 @@ public class BookmarkService {
         ArrayList<Bookmark> listBookmark = new ArrayList<>();
         ConnectionRequest con = new ConnectionRequest();
         con.setHttpMethod("GET");
-        con.setUrl("http://localhost/mySmartStartSymphony/web/app_dev.php/api/bookmark/all/2");
+        con.setUrl("http://localhost/mySmartStartSymphony/web/app_dev.php/api/bookmark/all/1");
         con.addResponseListener(new ActionListener<NetworkEvent>() {
             @Override
             public void actionPerformed(NetworkEvent evt) {

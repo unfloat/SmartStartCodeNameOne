@@ -44,7 +44,7 @@ public class Home {
 
         
         btnBookmarks.addActionListener((e) -> {
-            DisplayBookmarks up = new DisplayBookmarks();
+            DisplayBookmarks up = new DisplayBookmarks(res);
             up.getF().show();
         });
 

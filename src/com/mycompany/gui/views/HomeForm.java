@@ -49,7 +49,7 @@ public class HomeForm extends SideMenuBaseForm {
 
             @Override
             public void actionPerformed(ActionEvent evt) {
-                DisplayBookmarks displayBookmarks = new DisplayBookmarks();
+                DisplayBookmarks displayBookmarks = new DisplayBookmarks(res);
                 displayBookmarks.getF().show();
             }
         });
