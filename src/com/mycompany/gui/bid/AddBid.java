@@ -5,23 +5,29 @@
  */
 package com.mycompany.gui.bid;
 
+import com.codename1.notifications.LocalNotification;
+import com.codename1.notifications.LocalNotificationCallback;
 import com.codename1.ui.Button;
+import com.codename1.ui.ComboBox;
+import com.codename1.ui.Display;
 import com.codename1.ui.Form;
 import com.codename1.ui.TextField;
 import com.codename1.ui.util.Resources;
 import com.mycompany.service.BidService;
 import com.mycompany.Entite.Bid;
+import com.mycompany.Entite.Project;
 import com.mycompany.gui.views.Home;
 
 /**
  *
  * @author asus
  */
-public class AddBid extends Form {
+public class AddBid extends Form implements LocalNotificationCallback {
 
     Form f;
     TextField textDeliveryTime;
     TextField textMinimalRate;
+    final ComboBox interval = new ComboBox(new Object[]{"None", "Minute", "Hour", "Day", "Week"});
 
     Button btnajout, btnaff;
 
@@ -48,21 +54,40 @@ public class AddBid extends Form {
         f.add(textMinimalRate);
 
         f.add(btnajout);
+        f.add(interval);
         btnajout.addActionListener((e) -> {
             BidService bidService = new BidService();
+            Project project = bidService.getProject(projectId);
+            System.out.println(project.toString());
+
             Bid bid = new Bid(Integer.valueOf(textDeliveryTime.getText()), Integer.valueOf(textMinimalRate.getText()));
-            
+            bid.setProject(project);
             bidService.addBid(bid);
             textDeliveryTime.setText("");
-            //textDeliveryTime.setUIID("addField");
-            //textDeliveryTime.setHint("DeliveryTime");
-
             textMinimalRate.setText("");
-            //textMinimalRate.setUIID("addField");
-            //textMinimalRate.setHint("Minimal Rate");
+            int badgeNumber = 0;
+            System.out.println("gui" + bid.getProject().toString());
+            LocalNotification localNotification = new LocalNotification();
+            localNotification.setAlertBody("A freelancer put a bid on your project" + bid.getProject().getProjectName());
+            localNotification.setAlertTitle("New bid");
+            localNotification.setId("1");
+            localNotification.setBadgeNumber(badgeNumber++);
+            int repeatType = LocalNotification.REPEAT_NONE;
+            String selRepeat = (String) interval.getModel().getItemAt(interval.getModel().getSelectedIndex());
+            if ("Minute".equals(selRepeat)) {
+                repeatType = LocalNotification.REPEAT_MINUTE;
+            } else if ("Hour".equals(selRepeat)) {
+                repeatType = LocalNotification.REPEAT_HOUR;
+            } else if ("Day".equals(selRepeat)) {
+                repeatType = LocalNotification.REPEAT_DAY;
+            } else if ("Week".equals(selRepeat)) {
+                repeatType = LocalNotification.REPEAT_WEEK;
+            }
 
-            ShowBid showBid = new ShowBid(res,bid);
-            showBid.getF().show();
+            Display.getInstance().scheduleLocalNotification(localNotification, System.currentTimeMillis() + 10 * 1000, repeatType);
+
+//            ShowBid showBid = new ShowBid(res,bid);
+//            showBid.getF().show();
         });
 
     }
@@ -89,5 +114,10 @@ public class AddBid extends Form {
 
     public void settextDeliveryTime(TextField tTitle) {
         this.textDeliveryTime = tTitle;
+    }
+
+    @Override
+    public void localNotificationReceived(String notificationId) {
+        System.out.println("Received local notification " + notificationId + " in callback localNotificationReceived");
     }
 }

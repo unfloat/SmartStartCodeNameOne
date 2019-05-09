@@ -40,6 +40,51 @@ public class BidService {
         System.out.println("yes!");
     }
 
+    public Project getProject(int project_id) {
+        ConnectionRequest con = new ConnectionRequest();
+        Project project = new Project();
+
+        con.setHttpMethod("GET");
+        con.setUrl("http://localhost/mySmartStartSymphony/web/app_dev.php/api/bid/project/" + project_id);
+        con.addResponseListener(new ActionListener<NetworkEvent>() {
+            @Override
+            public void actionPerformed(NetworkEvent evt) {
+                //listTasks = getListTask(new String(con.getResponseData()));
+                JSONParser jsonParser = new JSONParser();
+
+                try {
+                    Map<String, Object> projects = jsonParser.parseJSON(new CharArrayReader(new String(con.getResponseData()).toCharArray()));
+                    List<Map<String, Object>> list = (List<Map<String, Object>>) projects.get("root");
+                    //List projectData = (List) bids.get("project");
+                    //Parcourir la liste des tâches Json
+                    for (Map<String, Object> obj : list) {
+                        //Création des tâches et récupération de leurs données
+                        System.out.println("here" + obj.toString() + "\n" + list.toString());
+                        float id = Float.parseFloat(obj.get("id").toString());
+
+                        project.setId((int) id);
+                        project.setProjectName(obj.get("projectName").toString());
+                        String projectDescription = obj.get("projectDescription").toString();
+                        project.setProjectDescription(projectDescription);
+                        project.setProjectLocation(obj.get("projectLocation").toString());
+                        Double MinBudget = Double.parseDouble(obj.get("minBudget").toString());
+                        Double MaxBudget = Double.parseDouble(obj.get("maxBudget").toString());
+                        project.setProjectName(obj.get("projectName").toString());
+                        System.out.println(project);
+
+                    }
+
+                } catch (IOException ex) {
+                }
+
+            }
+        }
+        );
+        NetworkManager.getInstance().addToQueueAndWait(con);
+
+        return project;
+    }
+
     public ArrayList<Bid> displayBids() {
         ArrayList<Bid> listBids = new ArrayList<>();
         ConnectionRequest con = new ConnectionRequest();
@@ -65,10 +110,10 @@ public class BidService {
 
                         Map<String, Object> project = (Map<String, Object>) obj.get("project");
                         Project bidsProject = new Project();
-                            String projectName = (String) project.get("projectName");
+                        String projectName = (String) project.get("projectName");
 
-                            float projectMinBudget = Float.parseFloat(project.get("minBudget").toString());
-                            float projectMaxBudget = Float.parseFloat(project.get("maxBudget").toString());
+                        float projectMinBudget = Float.parseFloat(project.get("minBudget").toString());
+                        float projectMaxBudget = Float.parseFloat(project.get("maxBudget").toString());
 
                         bid.setId((int) id);
                         bid.setDeliveryTime((int) deliveryTime);
@@ -77,12 +122,11 @@ public class BidService {
                         bidsProject.setMinBudget((int) projectMinBudget);
                         bidsProject.setMaxBudget((int) projectMaxBudget);
                         bid.setProject(bidsProject);
-                        
 
                         listBids.add(bid);
                         //System.out.println(bid.getProject().toString());
                     }
-                    
+
                 } catch (IOException ex) {
                 }
 

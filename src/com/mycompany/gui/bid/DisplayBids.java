@@ -38,6 +38,10 @@ public class DisplayBids extends Form {
     public DisplayBids(Resources theme) {
         form = new Form("Toolbar", new BoxLayout(BoxLayout.Y_AXIS));
         listBids = bidService.displayBids();
+        form.getToolbar().addCommandToRightBar("Add", null, (ev) -> {
+            AddBid addBid = new AddBid(res,1);
+            addBid.getF().show();
+        });
         if (listBids.isEmpty()) {
             Label message = new Label("You have no bids.\n Go ahead and create some! ");
             Container container = new Container(new BoxLayout((BoxLayout.Y_AXIS)));

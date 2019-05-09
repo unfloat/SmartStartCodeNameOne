@@ -1,5 +1,6 @@
 package com.mycompany.myapp;
 
+import com.codename1.notifications.LocalNotificationCallback;
 import static com.codename1.ui.CN.*;
 
 import com.codename1.ui.Form;
@@ -8,6 +9,7 @@ import com.codename1.ui.Dialog;
 import com.codename1.ui.plaf.UIManager;
 import com.codename1.ui.util.Resources;
 import com.codename1.ui.Toolbar;
+import com.mycompany.gui.SignInForm;
 import com.mycompany.gui.views.Home;
 
 public class MyApplication {
@@ -30,7 +32,8 @@ public class MyApplication {
             current.show();
             return;
         }
-        new Home(theme).getF().show();
+        SignInForm h = new SignInForm(theme);
+        h.show();
     }
 
     public void stop() {

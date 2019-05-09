@@ -70,11 +70,13 @@ public class BookmarkService {
                         Project bookmarkProject = new Project();
                         String projectName = (String) project.get("projectName");
 
-//                        float projectMinBudget = Float.parseFloat(project.get("minBudget").toString());
-//                        float projectMaxBudget = Float.parseFloat(project.get("maxBudget").toString());
+                        float projectMinBudget = Float.parseFloat(project.get("minBudget").toString());
+                        float projectMaxBudget = Float.parseFloat(project.get("maxBudget").toString());
                         bookmark.setId((int) id);
                         bookmark.setDateAdded(bookmarkDate);
                         bookmarkProject.setProjectName(projectName);
+                        bookmarkProject.setMinBudget((int) projectMinBudget);
+                        bookmarkProject.setMaxBudget((int) projectMaxBudget);
 
                         bookmark.setProject(bookmarkProject);
 
@@ -92,8 +94,6 @@ public class BookmarkService {
 
         return listBookmark;
     }
-
-
 
     public void updateBookmark(Bookmark bookmark, int x) {
         ConnectionRequest con = new ConnectionRequest();
