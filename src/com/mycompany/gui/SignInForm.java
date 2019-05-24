@@ -5,6 +5,7 @@ import com.codename1.ui.Dialog;
 import com.codename1.ui.FontImage;
 import com.codename1.ui.events.ActionEvent;
 import com.codename1.ui.events.ActionListener;
+import com.mycompany.gui.bid.DisplayBidders;
 import com.mycompany.gui.bid.ListBids;
 import com.mycompany.service.AuthenticationService;
 
@@ -88,7 +89,7 @@ AuthenticationService authenticationService = new AuthenticationService();
                 
             {
                 System.out.println("signed in");
-                new ListBids(resourceObjectInstance).show();
+                new DisplayBidders(resourceObjectInstance).getF().show();
             }  
             
             else if (username.getText().equals("2") && password.getText().equals("2"))

@@ -46,10 +46,12 @@ public class DisplayBidders {
             System.out.println(listBidders.get(iteration));
             Button showBid = new Button("Details");
             Bid currentBid = listBidders.get(iteration);
+                    System.out.println(currentBid.toString());
+
             Container c = new Container(new BoxLayout((BoxLayout.Y_AXIS)));
             //String guid = (String) currentListing.get("seq").toString();
             //Label date = new Label((String) currentBid.getProject().getPublishingDate());
-            //Label freelancerName = new Label("Bid minimal rate: " + String.valueOf(currentBid.get));
+            Label freelancerName = new Label("Freelancer: " + String.valueOf(currentBid.getFreelancer().getFirstName()));
 
             Label minimalRate = new Label("Bid minimal rate: " + String.valueOf(currentBid.getMinimalRate()));
             Label deliveryTime = new Label("Bid delivery time: " + String.valueOf(currentBid.getDeliveryTime()));
@@ -63,6 +65,7 @@ public class DisplayBidders {
                     .add(projectName)
                     .add(projectMinBudget)
                     .add(projectMaxBudget)
+                    .add(freelancerName)
                     .add(showBid);
             showBid.addActionListener(new ActionListener() {
                 @Override

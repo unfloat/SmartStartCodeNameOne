@@ -19,6 +19,16 @@ public class Bid {
 
     private Project project;
 
+    private FosUser freelancer;
+
+    public FosUser getFreelancer() {
+        return freelancer;
+    }
+
+    public void setFreelancer(FosUser freelancer) {
+        this.freelancer = freelancer;
+    }
+
     public Project getProject() {
         return project;
     }
@@ -52,7 +62,7 @@ public class Bid {
         this.id = id;
     }
 
-    public Bid(int id,int minimalRate, int deliveryTime) {
+    public Bid(int id, int minimalRate, int deliveryTime) {
         this.minimalRate = minimalRate;
         this.deliveryTime = deliveryTime;
     }
@@ -77,7 +87,6 @@ public class Bid {
 //        this.deliveryTime = deliveryTime;
 //        this.projectId = projectId;
 //    }
-
     public int getId() {
         return id;
     }

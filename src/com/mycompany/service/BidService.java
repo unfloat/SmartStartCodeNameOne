@@ -12,6 +12,7 @@ import com.codename1.io.NetworkEvent;
 import com.codename1.io.NetworkManager;
 import com.codename1.ui.events.ActionListener;
 import com.mycompany.Entite.Bid;
+import com.mycompany.Entite.FosUser;
 import com.mycompany.Entite.Project;
 import com.mycompany.Entite.ProjectF;
 import java.io.IOException;
@@ -267,7 +268,7 @@ public class BidService {
         ArrayList<Bid> listBidders = new ArrayList<>();
         ConnectionRequest con = new ConnectionRequest();
         con.setHttpMethod("GET");
-        con.setUrl("http://localhost/mySmartStartSymphony/web/app_dev.php/api/bid/bidders/"+project_id);
+        con.setUrl("http://localhost/mySmartStartSymphony/web/app_dev.php/api/bid/bidders/" + project_id);
         con.addResponseListener(new ActionListener<NetworkEvent>() {
             @Override
             public void actionPerformed(NetworkEvent evt) {
@@ -289,6 +290,10 @@ public class BidService {
                         Project bidsProject = new Project();
                         String projectName = (String) project.get("projectName");
 
+                        Map<String, Object> freelancer = (Map<String, Object>) obj.get("freelancer");
+                        FosUser bidsFreelancer = new FosUser();
+                        String freelancerName = (String) freelancer.get("projectName");
+
                         float projectMinBudget = Float.parseFloat(project.get("minBudget").toString());
                         float projectMaxBudget = Float.parseFloat(project.get("maxBudget").toString());
 
@@ -298,7 +303,9 @@ public class BidService {
                         bidsProject.setProjectName(projectName);
                         bidsProject.setMinBudget((int) projectMinBudget);
                         bidsProject.setMaxBudget((int) projectMaxBudget);
+                        bidsFreelancer.setUsername(freelancerName);
                         bid.setProject(bidsProject);
+                        bid.setFreelancer(bidsFreelancer);
 
                         listBidders.add(bid);
                         //System.out.println(bid.getProject().toString());
@@ -314,6 +321,7 @@ public class BidService {
 
         return listBidders;
     }
+
     public ArrayList<Project> getProjects() {
         ArrayList<Project> listProjects = new ArrayList<>();
         Project project = new Project();
