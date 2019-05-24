@@ -4,19 +4,17 @@
  * and open the template in the editor.
  */
 package com.mycompany.gui.job;
-
 import com.codename1.ui.Button;
+import com.codename1.ui.Dialog;
 import com.codename1.ui.Form;
-import com.codename1.ui.TextArea;
 import com.codename1.ui.TextField;
-import com.mycompany.service.ServiceJob;
+import com.mycompagny.service.ServiceJob;
 import com.mycompany.Entite.Job;
-
 /**
  *
  * @author sana
  */
-public class UpdateForm {
+public class UpdateJobForm {
 
     Form f;
     TextField tTitle;
@@ -27,7 +25,7 @@ public class UpdateForm {
     TextField tMin;
     Button btnajout,btnaff;
 
-    public UpdateForm(Job j) {
+    public UpdateJobForm(Job j) {
         f = new Form("home");
         tTitle = new TextField();
         tType = new TextField();
@@ -58,6 +56,7 @@ public class UpdateForm {
             ServiceJob ser = new ServiceJob();
             Job j1=new Job(tTitle.getText(), tType.getText(), tLoc.getText(),Double.valueOf(tMin.getText()), Double.valueOf(tMax.getText()), tDesc.getText());
             ser.updateJob(j1,j.getId());
+            Dialog.show("Successfull Update",j.getTitre()+" updated successfully !", "Ok", null);
             tTitle.setText("");
             tType.setText("");           
             tLoc.setText("");

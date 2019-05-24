@@ -5,12 +5,9 @@
  */
 package com.mycompany.gui.bid;
 
-import com.codename1.components.SpanLabel;
 import com.codename1.ui.Button;
 import com.codename1.ui.Component;
 import com.codename1.ui.Container;
-import com.codename1.ui.Display;
-import com.codename1.ui.EncodedImage;
 import com.codename1.ui.Form;
 import com.codename1.ui.Label;
 import com.codename1.ui.events.ActionEvent;
@@ -19,16 +16,13 @@ import com.codename1.ui.layouts.BoxLayout;
 import com.codename1.ui.util.Resources;
 import com.mycompany.service.BidService;
 import com.mycompany.Entite.Bid;
-import com.mycompany.gui.views.Home;
-import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Map;
 
 /**
  *
  * @author asus
  */
-public class DisplayBids extends Form {
+public class DisplayBids   {
 
     Resources res;
     Form form;
@@ -38,10 +32,7 @@ public class DisplayBids extends Form {
     public DisplayBids(Resources theme) {
         form = new Form("Toolbar", new BoxLayout(BoxLayout.Y_AXIS));
         listBids = bidService.displayBids();
-        form.getToolbar().addCommandToRightBar("Add", null, (ev) -> {
-            AddBid addBid = new AddBid(res,1);
-            addBid.getF().show();
-        });
+        System.out.println(listBids.toString());
         if (listBids.isEmpty()) {
             Label message = new Label("You have no bids.\n Go ahead and create some! ");
             Container container = new Container(new BoxLayout((BoxLayout.Y_AXIS)));
@@ -52,6 +43,7 @@ public class DisplayBids extends Form {
 
         Component[] listingsToAdd = new Component[listBids.size()];
         for (int iteration = 0; iteration < listingsToAdd.length; iteration++) {
+            System.out.println(listBids.get(iteration));
             Button showBid = new Button("Details");
             Bid currentBid = listBids.get(iteration);
             Container c = new Container(new BoxLayout((BoxLayout.Y_AXIS)));
@@ -78,7 +70,7 @@ public class DisplayBids extends Form {
                 }
             });
             listingsToAdd[iteration] = c;
-            form.add(listingsToAdd[iteration]);
+            form.add(c);
 
         }
 

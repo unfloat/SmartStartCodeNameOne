@@ -6,19 +6,23 @@ import com.codename1.io.ConnectionRequest;
 import com.codename1.io.NetworkEvent;
 import com.codename1.io.NetworkManager;
 import com.codename1.ui.Button;
-import com.codename1.ui.Container;
 import com.codename1.ui.Dialog;
 import com.codename1.ui.FontImage;
 import com.codename1.ui.Label;
 import com.codename1.ui.events.ActionEvent;
 import com.codename1.ui.events.ActionListener;
 import com.codename1.ui.geom.Dimension;
-import com.codename1.ui.layouts.BoxLayout;
 import com.codename1.ui.layouts.FlowLayout;
 import com.codename1.ui.plaf.RoundBorder;
+import com.mycompany.Entite.Bookmark;
 import com.mycompany.Entite.Project;
+import com.mycompany.gui.bid.AddBid;
+import com.mycompany.service.BidService;
+import com.mycompany.service.BookmarkService;
 import com.mycompany.service.ServiceProject;
 import java.text.ParseException;
+import java.util.Calendar;
+import java.util.Date;
 
 public class ListProjects extends BaseForm {
 //     
@@ -60,173 +64,229 @@ public class ListProjects extends BaseForm {
         setTitle("InboxForm");
         setName("InboxForm");
 
-        ConnectionRequest con = new ConnectionRequest();
-        con.setUrl("http://localhost/mySmartStartSymphony/web/app_dev.php/api/bid/projects");
-        con.addResponseListener(new ActionListener<NetworkEvent>() {
+        BidService bidService = new BidService();
+        //champ recherche
+        com.codename1.ui.Container gui_Container_111 = new com.codename1.ui.Container(new com.codename1.ui.layouts.BoxLayout(com.codename1.ui.layouts.BoxLayout.Y_AXIS));
+        gui_Container_111.addComponent(rech);
 
-            @Override
-            public void actionPerformed(NetworkEvent evt) {
-                try {
-                    ServiceProject s = new ServiceProject();
-                    
-
-                    //champ recherche
-                    com.codename1.ui.Container gui_Container_111 = new com.codename1.ui.Container(new com.codename1.ui.layouts.BoxLayout(com.codename1.ui.layouts.BoxLayout.Y_AXIS));
-                    gui_Container_111.addComponent(rech);
-
-                    //bouton recherche
-                    Button btnRech = new Button("Search");
-                    Dimension ddd = new Dimension();
-                    ddd.setWidth(70);
-                    ddd.setHeight(70);
-                    btnRech.setPreferredSize(ddd);
-                    gui_Container_111.addComponent(btnRech);
-                    btnRech.addActionListener(new ActionListener() {
-                        @Override
-                        public void actionPerformed(ActionEvent evt) {
-
-                            SpanLabel l1 = new SpanLabel();
-                            for (Project p1 : s.searchProjects(rech.getText())) {
-                                Label name = new Label(p1.getProjectName());
-                                gui_Container_111.add(name);
-                            }
-//                                Project ta = new Project();
-//                                l1.setText(s.searchProjects(ta).toString());
-//                                String a=s.searchProjects(rech.getText());
-//                                System.out.println(a);
-//                                l1.add(s.searchProjects(rech.getText()).toString());
-                            gui_Container_111.add(l1);
-                        }
-                    });
-
-                    addComponent(gui_Container_111);
-                    for (Project p1 : s.getListProjects(new String(con.getResponseData()))) {
-
-//                        for (Project p1 : s.getListProjects(new String(con.getResponseData()))) {
-                        // DeleteButton
-                        Button btn = new Button("Delete");
-                        Dimension d = new Dimension();
-                        d.setWidth(70);
-                        d.setHeight(70);
-                        btn.setPreferredSize(d);
-                        btn.addActionListener(new ActionListener() {
-                            @Override
-                            public void actionPerformed(ActionEvent evt) {
-
-                                Dialog d = new Dialog();
-
-                                if (Dialog.show("Confirmation", "Delete This Project??", "Ok", null)) {
-                                    ConnectionRequest req = new ConnectionRequest();
-
-                                    req.setUrl("http://localhost/foobar10/web/app_dev.php/task/projects/"
-                                            + p1.getId() + "/deleteProject");
-
-                                    try {
-                                        s.getListProjects(new String(con.getResponseData())).remove(p1);
-                                        refreshTheme();
-                                    } catch (ParseException ex) {
-
-                                    }
-
-                                    System.out.println(p1.getId());
-
-                                    NetworkManager.getInstance().addToQueue(req);
-                                    new ListProjects(resourceObjectInstance).removeAll();
-                                    new ListProjects(resourceObjectInstance).show();
-
-                                }
-                            }
-                        });
-
-                        //UpdateButton
-                        Button btn2 = new Button("Edit");
-                        btn2.setPreferredSize(d);
-                        btn2.addActionListener(new ActionListener() {
-                            @Override
-                            public void actionPerformed(ActionEvent evt) {
-                                UpdateProject upd = new UpdateProject(resourceObjectInstance, p1);
-                                upd.show();
-                            }
-                        });
-
-                        com.codename1.ui.Container gui_Container_1 = new com.codename1.ui.Container(new com.codename1.ui.layouts.BorderLayout());
-                        com.codename1.ui.Container gui_Container_2 = new com.codename1.ui.Container(new com.codename1.ui.layouts.FlowLayout());
-                        com.codename1.ui.Container gui_Container_4 = new com.codename1.ui.Container(new com.codename1.ui.layouts.FlowLayout());
-                        com.codename1.ui.Container gui_Container_3 = new com.codename1.ui.Container(new com.codename1.ui.layouts.BoxLayout(com.codename1.ui.layouts.BoxLayout.Y_AXIS));
-
-                        com.codename1.ui.Label gui_Label_1 = new com.codename1.ui.Label();
-                        com.codename1.ui.Label gui_Label_1_1 = new com.codename1.ui.Label();
-                        com.codename1.ui.Label gui_Label_2 = new com.codename1.ui.Label();
-                        com.codename1.ui.Label gui_Label_3 = new com.codename1.ui.Label();
-                        com.codename1.ui.Label gui_Label_4 = new com.codename1.ui.Label();
-                        com.codename1.ui.Label gui_Label_6 = new com.codename1.ui.Label();
-
-                        com.codename1.ui.TextArea gui_Text_Area_1 = new com.codename1.ui.TextArea();
-                        gui_Label_6.setShowEvenIfBlank(true);
-
-                        gui_Text_Area_1.setRows(2);
-                        gui_Text_Area_1.setColumns(100);
-                        gui_Text_Area_1.setEditable(false);
-
-                        addComponent(gui_Container_1);
-                        gui_Container_1.setName("Container_1");
-                        gui_Container_1.addComponent(com.codename1.ui.layouts.BorderLayout.EAST, gui_Container_2);
-
-                        gui_Container_2.setName("Container_2");
-                        gui_Container_2.addComponent(gui_Label_1);
-
-                        gui_Label_1.setText(String.valueOf(p1.getMinBudget()) + " TND + ");
-                        gui_Label_1.setUIID("SmallFontLabel");
-                        gui_Label_1.setName("Label_1");
-
-                        gui_Container_2.addComponent(gui_Label_1_1);
-
-                        gui_Label_1_1.setText(String.valueOf(p1.getMaxBudget()) + " TND");
-                        gui_Label_1_1.setUIID("SmallFontLabel");
-                        gui_Label_1_1.setName("Label_1_1");
-
-                        gui_Container_1.addComponent(com.codename1.ui.layouts.BorderLayout.WEST, gui_Container_4);
-                        gui_Container_4.setName("Container_4");
-                        ((com.codename1.ui.layouts.FlowLayout) gui_Container_4.getLayout()).setAlign(com.codename1.ui.Component.CENTER);
-                        gui_Container_4.addComponent(gui_Label_4);
-                        gui_Label_4.setUIID("Padding2");
-                        gui_Label_4.setName("Label_4");
-                        gui_Label_4.setIcon(resourceObjectInstance.getImage("label_round.png"));
-                        gui_Container_1.addComponent(com.codename1.ui.layouts.BorderLayout.CENTER, gui_Container_3);
-                        gui_Container_3.setName("Container_3");
-                        gui_Container_3.addComponent(gui_Label_3);
-                        gui_Container_3.addComponent(gui_Label_2);
-
-                        gui_Container_3.addComponent(gui_Text_Area_1);
-                        gui_Container_3.addComponent(btn);
-                        gui_Container_3.addComponent(btn2);
-                        gui_Label_3.setText(p1.getProjectName());
-                        gui_Label_3.setName("Label_3");
-                        gui_Label_2.setText(p1.getProjectLocation());
-                        gui_Label_2.setUIID("RedLabel");
-                        gui_Label_2.setName("Label_2");
-                        gui_Text_Area_1.setText(p1.getProjectDescription());
-                        gui_Text_Area_1.setUIID("SmallFontLabel");
-                        gui_Text_Area_1.setName("Text_Area_1");
-                        gui_Container_2.setName("Container_2");
-                        gui_Container_4.setName("Container_4");
-                        ((com.codename1.ui.layouts.FlowLayout) gui_Container_4.getLayout()).setAlign(com.codename1.ui.Component.CENTER);
-                        gui_Container_3.setName("Container_3");
-                        addComponent(gui_Label_6);
-                        gui_Container_1.setName("Container_1");
-                        gui_Label_6.setText("");
-                        gui_Label_6.setUIID("Separator");
+        //bouton recherche
+//                    Button btnRech = new Button("Search");
+//                    Dimension ddd = new Dimension();
+//                    ddd.setWidth(70);
+//                    ddd.setHeight(70);
+//                    btnRech.setPreferredSize(ddd);
+//                    gui_Container_111.addComponent(btnRech);
+//                    btnRech.addActionListener(new ActionListener() {
+//                        @Override
+//                        public void actionPerformed(ActionEvent evt) {
+//
+//                            SpanLabel l1 = new SpanLabel();
+//                            for (Project p1 : s.searchProjects(rech.getText())) {
+//                                Label name = new Label(p1.getProjectName());
+//                                gui_Container_111.add(name);
+//                            }
+////                                Project ta = new Project();
+////                                l1.setText(s.searchProjects(ta).toString());
+////                                String a=s.searchProjects(rech.getText());
+////                                System.out.println(a);
+////                                l1.add(s.searchProjects(rech.getText()).toString());
+//                            gui_Container_111.add(l1);
+//                        }
+//                    });
+        addComponent(gui_Container_111);
+        for (Project p1 : bidService.getProjects()) {
+            Project currentProject = p1;
+            Button addBookmarkBtn = new Button("Bookmark");
+            Dimension d = new Dimension();
+            d.setWidth(70);
+            d.setHeight(70);
+            addBookmarkBtn.setPreferredSize(d);
+            addBookmarkBtn.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent evt) {
+                    if (Dialog.show("Confirmation", "Bookmark this project?", "Ok", null)) {
+                        Date date = new Date();
+                        Bookmark bookmark = new Bookmark(1, currentProject.getId(), date);
+                        BookmarkService bookmarkService = new BookmarkService();
+                        bookmarkService.addBookmark(bookmark);
 
                     }
-                } catch (ParseException ex) {
-
                 }
             }
+            );
+
+            Button addBidBtn = new Button("Bid");
+
+            d.setWidth(70);
+            d.setHeight(70);
+            addBidBtn.setPreferredSize(d);
+
+            addBidBtn.addActionListener(
+                    new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent evt) {
+
+                    new AddBid(resourceObjectInstance, currentProject.getId()).show();
+
+                }
+
+            }
+            );
+
+            System.out.println("ListProjects" + currentProject.toString());
+
+//                        for (Project p1 : s.getListProjects(new String(con.getResponseData()))) {
+            // DeleteButton
+//                        Button btn = new Button("Delete");
+//                        Dimension d = new Dimension();
+//                        d.setWidth(70);
+//                        d.setHeight(70);
+//                        btn.setPreferredSize(d);
+//                        btn.addActionListener(new ActionListener() {
+//                            @Override
+//                            public void actionPerformed(ActionEvent evt) {
+//
+//                                Dialog d = new Dialog();
+//
+//                                if (Dialog.show("Confirmation", "Delete This Project??", "Ok", null)) {
+//                                    ConnectionRequest req = new ConnectionRequest();
+//
+//                                    req.setUrl("http://localhost/foobar10/web/app_dev.php/task/projects/"
+//                                            + p1.getId() + "/deleteProject");
+//
+//                                    try {
+//                                        s.getListProjects(new String(con.getResponseData())).remove(p1);
+//                                        refreshTheme();
+//                                    } catch (ParseException ex) {
+//
+//                                    }
+//
+//                                    System.out.println(p1.getId());
+//
+//                                    NetworkManager.getInstance().addToQueue(req);
+//                                    new ListProjects(resourceObjectInstance).removeAll();
+//                                    new ListProjects(resourceObjectInstance).show();
+//
+//                                }
+//                            }
+//                        });
+            //UpdateButton
+//                        Button btn2 = new Button("Edit");
+//                        btn2.setPreferredSize(d);
+//                        btn2.addActionListener(new ActionListener() {
+//                            @Override
+//                            public void actionPerformed(ActionEvent evt) {
+//                                UpdateProject upd = new UpdateProject(resourceObjectInstance, p1);
+//                                upd.show();
+//                            }
+//                        });
+            com.codename1.ui.Container gui_Container_1 = new com.codename1.ui.Container(new com.codename1.ui.layouts.BorderLayout());
+            com.codename1.ui.Container gui_Container_2 = new com.codename1.ui.Container(new com.codename1.ui.layouts.FlowLayout());
+            com.codename1.ui.Container gui_Container_4 = new com.codename1.ui.Container(new com.codename1.ui.layouts.FlowLayout());
+            com.codename1.ui.Container gui_Container_3 = new com.codename1.ui.Container(new com.codename1.ui.layouts.BoxLayout(com.codename1.ui.layouts.BoxLayout.Y_AXIS));
+
+            com.codename1.ui.Label gui_Label_1 = new com.codename1.ui.Label();
+            com.codename1.ui.Label gui_Label_1_1 = new com.codename1.ui.Label();
+            com.codename1.ui.Label gui_Label_2 = new com.codename1.ui.Label();
+            com.codename1.ui.Label gui_Label_3 = new com.codename1.ui.Label();
+            com.codename1.ui.Label gui_Label_4 = new com.codename1.ui.Label();
+            com.codename1.ui.Label gui_Label_6 = new com.codename1.ui.Label();
+
+            com.codename1.ui.TextArea gui_Text_Area_1 = new com.codename1.ui.TextArea();
+
+            gui_Label_6.setShowEvenIfBlank(
+                    true);
+
+            gui_Text_Area_1.setRows(
+                    2);
+            gui_Text_Area_1.setColumns(
+                    100);
+            gui_Text_Area_1.setEditable(
+                    false);
+
+            addComponent(gui_Container_1);
+
+            gui_Container_1.setName(
+                    "Container_1");
+            gui_Container_1.addComponent(com.codename1.ui.layouts.BorderLayout.EAST, gui_Container_2);
+
+            gui_Container_2.setName(
+                    "Container_2");
+            gui_Container_2.addComponent(gui_Label_1);
+
+            gui_Label_1.setText(String.valueOf(p1.getMinBudget()) + " TND + ");
+            gui_Label_1.setUIID(
+                    "SmallFontLabel");
+            gui_Label_1.setName(
+                    "Label_1");
+
+            gui_Container_2.addComponent(gui_Label_1_1);
+
+            gui_Label_1_1.setText(String.valueOf(p1.getMaxBudget()) + " TND");
+            gui_Label_1_1.setUIID(
+                    "SmallFontLabel");
+            gui_Label_1_1.setName(
+                    "Label_1_1");
+
+            gui_Container_1.addComponent(com.codename1.ui.layouts.BorderLayout.WEST, gui_Container_4);
+
+            gui_Container_4.setName(
+                    "Container_4");
+            ((com.codename1.ui.layouts.FlowLayout) gui_Container_4.getLayout()).setAlign(com.codename1.ui.Component.CENTER);
+            gui_Container_4.addComponent(gui_Label_4);
+
+            gui_Label_4.setUIID(
+                    "Padding2");
+            gui_Label_4.setName(
+                    "Label_4");
+            gui_Label_4.setIcon(resourceObjectInstance.getImage("label_round.png"));
+            gui_Container_1.addComponent(com.codename1.ui.layouts.BorderLayout.CENTER, gui_Container_3);
+
+            gui_Container_3.setName(
+                    "Container_3");
+            gui_Container_3.addComponent(gui_Label_3);
+
+            gui_Container_3.addComponent(gui_Label_2);
+
+            gui_Container_3.addComponent(gui_Text_Area_1);
+
+            gui_Container_3.addComponent(addBidBtn);
+
+            gui_Container_3.addComponent(addBookmarkBtn);
+
+            gui_Label_3.setText(p1.getProjectName());
+            gui_Label_3.setName(
+                    "Label_3");
+            gui_Label_2.setText(p1.getProjectLocation());
+            gui_Label_2.setUIID(
+                    "RedLabel");
+            gui_Label_2.setName(
+                    "Label_2");
+            gui_Text_Area_1.setText(p1.getProjectDescription());
+            gui_Text_Area_1.setUIID(
+                    "SmallFontLabel");
+            gui_Text_Area_1.setName(
+                    "Text_Area_1");
+            gui_Container_2.setName(
+                    "Container_2");
+            gui_Container_4.setName(
+                    "Container_4");
+            ((com.codename1.ui.layouts.FlowLayout) gui_Container_4.getLayout()).setAlign(com.codename1.ui.Component.CENTER);
+            gui_Container_3.setName(
+                    "Container_3");
+            addComponent(gui_Label_6);
+
+            gui_Container_1.setName(
+                    "Container_1");
+            gui_Label_6.setText(
+                    "");
+            gui_Label_6.setUIID(
+                    "Separator");
+
         }
-        );
-        NetworkManager.getInstance()
-                .addToQueue(con);
+    }
+
 
     }
 
-}
+

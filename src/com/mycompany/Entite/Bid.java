@@ -52,7 +52,7 @@ public class Bid {
         this.id = id;
     }
 
-    public Bid(int minimalRate, int deliveryTime) {
+    public Bid(int id,int minimalRate, int deliveryTime) {
         this.minimalRate = minimalRate;
         this.deliveryTime = deliveryTime;
     }
@@ -72,11 +72,11 @@ public class Bid {
         this.projectId = projectId;
     }
 
-    public Bid(int minimalRate, int deliveryTime, int projectId) {
-        this.minimalRate = minimalRate;
-        this.deliveryTime = deliveryTime;
-        this.projectId = projectId;
-    }
+//    public Bid(int minimalRate, int deliveryTime, int projectId) {
+//        this.minimalRate = minimalRate;
+//        this.deliveryTime = deliveryTime;
+//        this.projectId = projectId;
+//    }
 
     public int getId() {
         return id;

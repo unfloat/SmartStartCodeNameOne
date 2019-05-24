@@ -6,17 +6,11 @@
 package com.mycompany.gui.bid;
 
 import com.codename1.components.SpanLabel;
-import com.codename1.io.ConnectionRequest;
-import com.codename1.io.NetworkEvent;
-import com.codename1.io.NetworkManager;
 import com.codename1.ui.Button;
-import com.codename1.ui.Component;
 import com.codename1.ui.Container;
 import com.codename1.ui.Dialog;
-import com.codename1.ui.Display;
-import com.codename1.ui.EncodedImage;
-import com.codename1.ui.Form;
 import com.codename1.ui.Label;
+import com.codename1.ui.TextField;
 import com.codename1.ui.events.ActionEvent;
 import com.codename1.ui.events.ActionListener;
 import com.codename1.ui.geom.Dimension;
@@ -25,16 +19,10 @@ import com.codename1.ui.layouts.FlowLayout;
 import com.codename1.ui.util.Resources;
 import com.mycompany.service.BidService;
 import com.mycompany.Entite.Bid;
-import com.mycompany.Entite.Project;
+import com.mycompany.Entite.ProjectF;
 import com.mycompany.gui.BaseForm;
 import com.mycompany.gui.ListProjects;
-import com.mycompany.gui.UpdateProject;
-import com.mycompany.gui.views.Home;
-import com.mycompany.service.ServiceProject;
-import java.io.IOException;
-import java.text.ParseException;
 import java.util.ArrayList;
-import java.util.Map;
 
 /**
  *
@@ -43,9 +31,9 @@ import java.util.Map;
 public class ListBids extends BaseForm {
 
     Resources res;
-    Form form;
     ArrayList<Bid> listBids;
     BidService bidService = new BidService();
+    TextField rech = new TextField();
 
     public ListBids() {
         this(com.codename1.ui.util.Resources.getGlobalResources());
@@ -57,33 +45,75 @@ public class ListBids extends BaseForm {
     }
 
     public ListBids(Resources resourceObjectInstance) {
-        //initGuiBuilderComponents(resourceObjectInstance);
-        getToolbar().setTitleComponent(
+         getToolbar().setTitleComponent(
                 FlowLayout.encloseCenterMiddle(
-                        new Label("List Projects", "Title")
+                        new Label("List Bids", "Title")
                 )
         );
-
         installSidemenu(resourceObjectInstance);
 
         listBids = bidService.displayBids();
-        form.getToolbar().addCommandToRightBar("Add", null, (ev) -> {
-            AddBid addBid = new AddBid(res, 1);
-            addBid.getF().show();
-        });
+
+        System.out.println("listBids" + listBids.toString());
+
         if (listBids.isEmpty()) {
             Label message = new Label("You have no bids.\n Go ahead and create some! ");
             Container container = new Container(new BoxLayout((BoxLayout.Y_AXIS)));
             container.add(message);
-            form.add(container);
+            Button listProjectBtn = new Button("Available Projects");
+            listProjectBtn.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent evt) {
+                    new ListProjects(resourceObjectInstance).show();
+
+                }
+            });
+            container.add(listProjectBtn);
+            addComponent(container);
 
         }
 
-        Component[] listingsToAdd = new Component[listBids.size()];
-        for (int iteration = 0; iteration < listingsToAdd.length; iteration++) {
-            Bid currentBid = listBids.get(iteration);
 
-            ////////////////////////////////////////////////////////////
+        com.codename1.ui.Container gui_Container_111 = new com.codename1.ui.Container(new com.codename1.ui.layouts.BoxLayout(com.codename1.ui.layouts.BoxLayout.Y_AXIS));
+        gui_Container_111.addComponent(rech);
+
+        //bouton recherche
+        Button btnRech = new Button("Search");
+        Dimension ddd = new Dimension();
+        ddd.setWidth(70);
+        ddd.setHeight(70);
+        btnRech.setPreferredSize(ddd);
+        gui_Container_111.addComponent(btnRech);
+        btnRech.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent evt) {
+
+                SpanLabel l1 = new SpanLabel();
+                for (ProjectF p1 : bidService.getProject(rech.getText())) {
+                    Label name = new Label(p1.getProjectName());
+                    gui_Container_111.add(name);
+                }
+//                                Project ta = new Project();
+//                                l1.setText(s.searchProjects(ta).toString());
+//                                String a=s.searchProjects(rech.getText());
+//                                System.out.println(a);
+//                                l1.add(s.searchProjects(rech.getText()).toString());
+                gui_Container_111.add(l1);
+            }
+        });
+
+        addComponent(gui_Container_111);
+
+        //Component[] listingsToAdd = new Component[listBids.size()];
+        for (int iteration = 0; iteration < listBids.size(); iteration++) {
+            Bid currentBid = listBids.get(iteration);
+            System.out.println("here");
+
+//            com.codename1.ui.Container singleFlowContainer = new com.codename1.ui.Container(new com.codename1.ui.layouts.FlowLayout());
+//
+//            com.codename1.ui.Label label = new com.codename1.ui.Label();
+//
+//            com.codename1.ui.Container flowContainer = new com.codename1.ui.Container(new com.codename1.ui.layouts.FlowLayout());
             Button btn = new Button("Delete");
             Dimension d = new Dimension();
             d.setWidth(70);
@@ -95,7 +125,7 @@ public class ListBids extends BaseForm {
 
                     Dialog d = new Dialog();
 
-                    if (Dialog.show("Confirmation", "Delete This Project??", "Ok", null)) {
+                    if (Dialog.show("Confirmation", "Delete This Bid??", "Ok", null)) {
                         BidService bidService = new BidService();
                         bidService.deleteBid(currentBid.getId());
 
@@ -115,11 +145,12 @@ public class ListBids extends BaseForm {
             btn2.addActionListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent evt) {
-                    EditBid editBid = new EditBid(resourceObjectInstance, currentBid);
-                    editBid.getF().show();
+                    new EditBid(resourceObjectInstance, currentBid).show();
+
                 }
             });
 
+          
             com.codename1.ui.Container gui_Container_1 = new com.codename1.ui.Container(new com.codename1.ui.layouts.BorderLayout());
             com.codename1.ui.Container gui_Container_2 = new com.codename1.ui.Container(new com.codename1.ui.layouts.FlowLayout());
             com.codename1.ui.Container gui_Container_4 = new com.codename1.ui.Container(new com.codename1.ui.layouts.FlowLayout());
@@ -146,7 +177,7 @@ public class ListBids extends BaseForm {
             gui_Container_2.setName("Container_2");
             gui_Container_2.addComponent(gui_Label_1);
 
-            gui_Label_1.setText(String.valueOf(currentBid.getProject().getMinBudget()) + " TND ");
+            gui_Label_1.setText(String.valueOf(currentBid.getProject().getMinBudget()) + " TND + ");
             gui_Label_1.setUIID("SmallFontLabel");
             gui_Label_1.setName("Label_1");
 
@@ -156,57 +187,41 @@ public class ListBids extends BaseForm {
             gui_Label_1_1.setUIID("SmallFontLabel");
             gui_Label_1_1.setName("Label_1_1");
 
-            gui_Container_2.addComponent(gui_Label_2);
+            gui_Container_1.addComponent(com.codename1.ui.layouts.BorderLayout.WEST, gui_Container_4);
+            gui_Container_4.setName("Container_4");
+            ((com.codename1.ui.layouts.FlowLayout) gui_Container_4.getLayout()).setAlign(com.codename1.ui.Component.CENTER);
+            gui_Container_4.addComponent(gui_Label_4);
+            gui_Label_4.setUIID("Padding2");
+            gui_Label_4.setName("Label_4");
+            gui_Label_4.setIcon(resourceObjectInstance.getImage("label_round.png"));
+            gui_Container_1.addComponent(com.codename1.ui.layouts.BorderLayout.CENTER, gui_Container_3);
+            gui_Container_3.setName("Container_3");
+            gui_Container_3.addComponent(gui_Label_3);
+            gui_Container_3.addComponent(gui_Label_2);
 
-            gui_Label_2.setText(String.valueOf("Bid minimal rate: " + currentBid.getMinimalRate()));
-            gui_Label_2.setUIID("SmallFontLabel");
+            gui_Container_3.addComponent(gui_Text_Area_1);
+            gui_Container_3.addComponent(btn);
+            gui_Container_3.addComponent(btn2);
+            gui_Label_3.setText("Project "+ currentBid.getProject().getProjectName());
+            gui_Label_3.setName("Label_3");
+            gui_Label_2.setText(String.valueOf(currentBid.getDeliveryTime()));
+            gui_Label_2.setUIID("RedLabel");
             gui_Label_2.setName("Label_2");
+            gui_Text_Area_1.setText(String.valueOf(currentBid.getMinimalRate()));
+            
+            gui_Text_Area_1.setUIID("SmallFontLabel");
+            gui_Text_Area_1.setName("Text_Area_1");
+            gui_Container_2.setName("Container_2");
+            gui_Container_4.setName("Container_4");
+            ((com.codename1.ui.layouts.FlowLayout) gui_Container_4.getLayout()).setAlign(com.codename1.ui.Component.CENTER);
+            gui_Container_3.setName("Container_3");
+            addComponent(gui_Label_6);
+            gui_Container_1.setName("Container_1");
+            gui_Label_6.setText("");
+            gui_Label_6.setUIID("Separator");
 
-            gui_Container_2.addComponent(gui_Label_2);
-
-            gui_Label_2.setText(String.valueOf("Bid delivery time: " + currentBid.getDeliveryTime()));
-            gui_Label_2.setUIID("SmallFontLabel");
-            gui_Label_2.setName("Label_2");
-
-            form.add(gui_Container_1);
-
-            ////////////////////////////////////////////////////////////
-            //Button showBid = new Button("Details");
-            //Container c = new Container(new BoxLayout((BoxLayout.Y_AXIS)));
-            //String guid = (String) currentListing.get("seq").toString();
-            //Label date = new Label((String) currentBid.getProject().getPublishingDate());
-//            Label minimalRate = new Label("Bid minimal rate: " + String.valueOf(currentBid.getMinimalRate()));
-//            Label deliveryTime = new Label("Bid delivery time: " + String.valueOf(currentBid.getDeliveryTime()));
-//            Label projectName = new Label("Project Title: " + String.valueOf(currentBid.getProject().getProjectName()));
-//            Label projectMinBudget = new Label("Project Minimum Budget: " + String.valueOf(currentBid.getProject().getMinBudget()));
-//            Label projectMaxBudget = new Label("Project Maximum Budget: " + String.valueOf(currentBid.getProject().getMaxBudget()));
-//            //Label projectExpiration = new Label(String.valueOf(currentBid.getProject().getValidityPeriod()));
-//
-//            c.add(minimalRate)
-//                    .add(deliveryTime)
-//                    .add(projectName)
-//                    .add(projectMinBudget)
-//                    .add(projectMaxBudget)
-//                    .add(showBid);
-//            showBid.addActionListener(new ActionListener() {
-//                @Override
-//                public void actionPerformed(ActionEvent evt) {
-//                    ShowBid or = new ShowBid(res, currentBid);
-//                    or.getF().show();
-//                }
-//            });
-//            listingsToAdd[iteration] = c;
-//            form.add(listingsToAdd[iteration]);
         }
 
-    }
-
-    public Form getF() {
-        return form;
-    }
-
-    public void setF(Form f) {
-        this.form = f;
     }
 
 }

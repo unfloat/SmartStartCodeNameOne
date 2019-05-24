@@ -1,3 +1,4 @@
-lib/CLDC11.jar
 lib/CodenameOne_SRC.zip
 lib/CodenameOne.jar
+dist/lib/CodenameOne_SRC.zip
+dist/lib/CodenameOne.jar

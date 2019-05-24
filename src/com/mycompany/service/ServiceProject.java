@@ -42,7 +42,6 @@ public class ServiceProject {
 
             Map<String, Object> chambres = j.parseJSON(new CharArrayReader(json.toCharArray()));
 
-            System.out.println();
             List<Map<String, Object>> list = (List<Map<String, Object>>) chambres.get("root");
 
             for (Map<String, Object> obj : list) {

@@ -5,48 +5,36 @@
  */
 package com.mycompany.Entite;
 
-import java.io.Serializable;
-
-
-public class Review  {
-
-    private static final long serialVersionUID = 1L;
-   
-    private Integer id;
-    
-    private int onBudget;
-   
-    private int onTime;
-    
-    private int rating;
-    
-    private String comment;
-    
-    private int freelancerReviewedId;
-   
-    private int projectId;
-    
-    private FosUser employerReviewerId;
+/**
+ *
+ * @author bhk
+ */
+public class Review {
+   private int id;
+   private boolean onBudget;
+   private boolean onTime;
+   private int rating;
+   private String comment;
+   private int employerReviewerId;
+   private int freelancerReviewedId;
+   private int projectId;
 
     public Review() {
     }
 
-    public Review(Integer id) {
+    public Review(int id, boolean onBudget, boolean onTime, int rating, String comment, int projectId, int freelancerReviewedId, int employerReviewerId) {
         this.id = id;
-    }
-
-    public Review(int onBudget, int onTime, int rating, String comment,  int projectId, int freelancerReviewedId) {
         this.onBudget = onBudget;
         this.onTime = onTime;
         this.rating = rating;
         this.comment = comment;
-        this.projectId = projectId;
+        this.employerReviewerId = employerReviewerId;
         this.freelancerReviewedId = freelancerReviewedId;
-        
+        this.projectId = projectId;
     }
 
-    
-    public Review(Integer id, int onBudget, int onTime, int rating, String comment) {
+        
+    public Review(int id, boolean onBudget, boolean onTime, int rating, String comment) {
         this.id = id;
         this.onBudget = onBudget;
         this.onTime = onTime;
@@ -54,34 +42,35 @@ public class Review  {
         this.comment = comment;
     }
 
-    public Review(int onBudget, int onTime, int rating, String comment) {
+    public Review(boolean onBudget, boolean onTime, int rating, String comment) {
         this.onBudget = onBudget;
         this.onTime = onTime;
         this.rating = rating;
         this.comment = comment;
     }
+    
 
-    public Integer getId() {
+    public int getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(int id) {
         this.id = id;
     }
 
-    public int getOnBudget() {
+    public boolean getOnBudget() {
         return onBudget;
     }
 
-    public void setOnBudget(int onBudget) {
+    public void setOnBudget(boolean onBudget) {
         this.onBudget = onBudget;
     }
 
-    public int getOnTime() {
+    public boolean getOnTime() {
         return onTime;
     }
 
-    public void setOnTime(int onTime) {
+    public void setOnTime(boolean onTime) {
         this.onTime = onTime;
     }
 
@@ -101,6 +90,14 @@ public class Review  {
         this.comment = comment;
     }
 
+    public int getEmployerReviewerId() {
+        return employerReviewerId;
+    }
+
+    public void setEmployerReviewerId(int employerReviewerId) {
+        this.employerReviewerId = employerReviewerId;
+    }
+
     public int getFreelancerReviewedId() {
         return freelancerReviewedId;
     }
@@ -116,38 +113,12 @@ public class Review  {
     public void setProjectId(int projectId) {
         this.projectId = projectId;
     }
-
-    public FosUser getEmployerReviewerId() {
-        return employerReviewerId;
-    }
-
-    public void setEmployerReviewerId(FosUser employerReviewerId) {
-        this.employerReviewerId = employerReviewerId;
-    }
-
-    @Override
-    public int hashCode() {
-        int hash = 0;
-        hash += (id != null ? id.hashCode() : 0);
-        return hash;
-    }
-
-    @Override
-    public boolean equals(Object object) {
-        // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof Review)) {
-            return false;
-        }
-        Review other = (Review) object;
-        if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
-            return false;
-        }
-        return true;
-    }
-
+    
     @Override
     public String toString() {
-        return "Entities.Review[ id=" + id + " ]";
+        return "Review{" + "Id=" + id + ", \nWas it on Budget=" + onBudget + ", \nWas it on Time=" + onTime + ", \nRating=" + rating + ", \nComment=" + comment + "}\n\n";
     }
+   
     
+           
 }

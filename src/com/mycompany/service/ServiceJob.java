@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.mycompany.service;
+package com.mycompagny.service;
 
 import com.codename1.io.CharArrayReader;
 import com.codename1.io.ConnectionRequest;
@@ -86,7 +86,7 @@ public class ServiceJob {
 
          con.addResponseListener((e) -> {
             String str = new String(con.getResponseData());//Récupération de la réponse du serveur
-            //System.out.println(str);//Affichage de la réponse serveur sur la console
+            System.out.println(str);//Affichage de la réponse serveur sur la console
 
         });
         NetworkManager.getInstance().addToQueue(con);

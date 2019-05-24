@@ -5,13 +5,11 @@
  */
 package com.mycompany.gui.job;
 
-import com.mycompany.gui.views.Home;
 import com.codename1.ui.Button;
 import com.codename1.ui.Form;
-import com.codename1.ui.TextArea;
+import com.codename1.ui.Label;
 import com.codename1.ui.TextField;
-import com.codename1.ui.util.Resources;
-import com.mycompany.service.ServiceJob;
+import com.mycompagny.service.ServiceJob;
 import com.mycompany.Entite.Job;
 
 /**
@@ -28,49 +26,54 @@ public class AddForm_1 {
     TextField tMax;
     TextField tMin;
     TextField tTag;
-    Button btnajout, btnaff;
-    Resources res;
+    Label descL;
+    Button btnajout,btnaff;
 
     public AddForm_1() {
         f = new Form("Add Job");
-        f.getToolbar().addCommandToRightBar("back", null, (ev) -> {
-            Home h = new Home(res);
-            h.getF().show();
-        });
-        tTitle = new TextField();
-        tType = new TextField();
-        tLoc = new TextField();
-        tMin = new TextField();
-        tMax = new TextField();
-        tDesc = new TextField();
+        f.getToolbar().addCommandToRightBar("Home", null, (ev)->{Home h = new Home();
+          h.getF().show();
+          });
+        tTitle = new TextField("","Title");
+        
+        tType = new TextField("","Type");
+        
+        tLoc = new TextField("","Location");
+            
+        tMin = new TextField("","Minimum Salary");
+        
+        tMax = new TextField("","Maximum Salary");
+        
+        tDesc = new TextField("", "Description");
+        
         btnajout = new Button("Ajouter");
-        btnaff = new Button("Affichage");
+        btnaff=new Button("Affichage");
         f.add(tTitle);
         f.add(tType);
         f.add(tLoc);
         f.add(tMin);
         f.add(tMax);
         f.add(tDesc);
-
+        
+        
         f.add(btnajout);
         btnajout.addActionListener((e) -> {
             ServiceJob ser = new ServiceJob();
-            Job j = new Job(tTitle.getText(), tType.getText(), tLoc.getText(), Double.valueOf(tMin.getText()), Double.valueOf(tMax.getText()), tDesc.getText());
+            Job j=new Job(tTitle.getText(), tType.getText(), tLoc.getText(),Double.valueOf(tMin.getText()), Double.valueOf(tMax.getText()), tDesc.getText());
             ser.addJob(j);
             tTitle.setText("");
-            tTitle.setUIID("addField");
-            tTitle.setHint("Job Title");
-            tTitle.getHintLabel().setUIID("job Field hint");
+            
             tType.setText("");
             tDesc.setText("");
             tLoc.setText("");
             tMax.setText("");
             tMin.setText("");
-            ShowJobs up = new ShowJobs();
+            ShowJobs up=new ShowJobs();
             up.getF().show();
+            
 
         });
-
+        
     }
 
     public Form getF() {
@@ -152,5 +155,15 @@ public class AddForm_1 {
     public void setBtnaff(Button btnaff) {
         this.btnaff = btnaff;
     }
+
+    public Label getDescL() {
+        return descL;
+    }
+
+    public void setDescL(Label descL) {
+        this.descL = descL;
+    }
+
+   
 
 }

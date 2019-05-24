@@ -27,14 +27,13 @@ import java.util.Map;
  */
 public class BookmarkService {
 
-    public void addBookmark(Job j) {
+    public void addBookmark(Bookmark bookmark) {
         ConnectionRequest con = new ConnectionRequest();
         String Url = "http://localhost/mySmartStartSymphony/web/app_dev.php/api/bookmark/add/1/1";
         con.setUrl(Url);
 
         con.addResponseListener((e) -> {
             String str = new String(con.getResponseData());//Récupération de la réponse du serveur
-            System.out.println(str);//Affichage de la réponse serveur sur la console
 
         });
         NetworkManager.getInstance().addToQueue(con);

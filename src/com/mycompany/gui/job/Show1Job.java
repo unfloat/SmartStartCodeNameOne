@@ -22,6 +22,7 @@ package com.mycompany.gui.job;
 import com.codename1.components.SpanLabel;
 import com.codename1.ui.Button;
 import com.codename1.ui.Container;
+import com.codename1.ui.Dialog;
 import com.codename1.ui.Form;
 import com.codename1.ui.Label;
 import com.codename1.ui.TextField;
@@ -30,7 +31,7 @@ import com.codename1.ui.events.ActionEvent;
 import com.codename1.ui.events.ActionListener;
 import com.codename1.ui.layouts.BoxLayout;
 import com.codename1.ui.util.Resources;
-import com.mycompany.service.ServiceJob;
+import com.mycompagny.service.ServiceJob;
 import com.mycompany.Entite.Job;
 
 
@@ -47,29 +48,23 @@ public class Show1Job {
     public Show1Job(Resources res,Job j) {
         
         f=new Form();
-//     Toolbar tb = new Toolbar(true);
-//      f.setToolbar(tb);
-      //super.addSideMenu(res); 
-      f.getToolbar().addCommandToRightBar("Back", null, (ev)->{ShowJobs h = new ShowJobs();
+        f.getToolbar().addCommandToRightBar("Back", null, (ev)->{ShowJobs h = new ShowJobs();
           h.getF().show();
           });
-      Label title=new Label("Title : "+j.getTitre());
-      Label type=new Label("Type : "+j.getType());
-      Label location=new Label("Location : "+j.getLocation());
-      Label salary=new Label("Salary : "+j.getMinSal()+"  -  "+j.getMaxSal());
-      Label desc=new Label("Description : "+j.getEmployer_id());
-      
-      
-      Container C=new Container(BoxLayout.y());
-      C.add(title);
-      C.add(type);
-      C.add(location);
-      C.add(salary);
-      C.add(desc);
-           
-      Button delete=new Button("Delete");
-      Button update=new Button("Update");
-       Container cont=new Container();
+        Label title=new Label("Title : "+j.getTitre());
+        Label type=new Label("Type : "+j.getType());
+        Label location=new Label("Location : "+j.getLocation());
+        Label salary=new Label("Salary : "+j.getMinSal()+"  -  "+j.getMaxSal());
+        Label desc=new Label("Description : "+j.getDescription());
+        Container C=new Container(BoxLayout.y());
+        C.add(title);
+        C.add(type);
+        C.add(location);
+        C.add(salary);
+        C.add(desc);
+        Button delete=new Button("Delete");
+        Button update=new Button("Update");
+        Container cont=new Container();
           cont.add(delete);
           cont.add(update);
           C.add(cont);
@@ -78,24 +73,19 @@ public class Show1Job {
                @Override
                public void actionPerformed(ActionEvent evt) {
                    ServiceJob js=new ServiceJob();
+                   Dialog.show("Delete Job", "Job "+j.getTitre()+" deleted !", "Ok", null);
                    js.deleteJob(j.getId());
                    ShowJobs a = new ShowJobs();
                    a.getF().show();
                }
-           });
-           
-           update.addActionListener(new ActionListener() {
+            });
+            update.addActionListener(new ActionListener() {
                @Override
                public void actionPerformed(ActionEvent evt) {
-                   UpdateForm up=new UpdateForm(j);
+                   UpdateJobForm up=new UpdateJobForm(j);
                    up.getF().show();
                }
            });
-      
-       
-     
-      
-        
     }
 
     public Form getF() {

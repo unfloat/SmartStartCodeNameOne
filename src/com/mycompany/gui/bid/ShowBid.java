@@ -65,7 +65,7 @@ public class ShowBid {
             @Override
             public void actionPerformed(ActionEvent evt) {
                 EditBid editBid = new EditBid(res, bid);
-                editBid.getF().show();
+                editBid.show();
             }
         });
 

@@ -28,6 +28,7 @@ import com.mycompany.service.BookmarkService;
 import com.mycompany.Entite.Bid;
 import com.mycompany.Entite.Bookmark;
 import com.mycompany.Entite.Job;
+import com.mycompany.gui.bid.DisplayBids;
 import com.mycompany.gui.views.Home;
 import com.mycompany.gui.job.Show1Job;
 import java.io.IOException;
@@ -71,6 +72,10 @@ public class DisplayBookmarks {
     }
 
     public DisplayBookmarks(Resources res) {
+        form.getToolbar().addCommandToRightBar("Back", null, (ev) -> {
+            DisplayBids displayBids = new DisplayBids(res);
+            displayBids.getF().show();
+        });
         form.setLayout(new BoxLayout(BoxLayout.Y_AXIS));
         
         favoriteSel = res.getImage("favorite_sel");

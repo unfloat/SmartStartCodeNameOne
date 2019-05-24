@@ -5,13 +5,17 @@ import com.codename1.ui.Container;
 import com.codename1.ui.Form;
 import com.codename1.ui.Image;
 import com.codename1.ui.Label;
-import com.codename1.ui.layouts.BoxLayout;
 import com.codename1.ui.layouts.FlowLayout;
 import com.codename1.ui.util.Resources;
-import com.mycompany.gui.bid.DisplayBids;
+import com.mycompany.gui.bid.DisplayBidders;
+import com.mycompany.gui.bid.ListBids;
+import com.mycompany.gui.bookmark.ListBookmarks;
+import com.mycompany.service.BidService;
 
 
 public class BaseForm extends Form {
+    
+    BidService bidService = new BidService();
     public void installSidemenu(Resources res) {
         Image selection = res.getImage("selection-in-sidemenu.png");
         
@@ -51,11 +55,54 @@ public class BaseForm extends Form {
         myBidsButton.setUIID("SideCommand");
         myBidsButton.getAllStyles().setPaddingBottom(0);
         Container bidsContainer = FlowLayout.encloseMiddle(myBidsButton, 
-                new Label("18", "SideCommandNumber"));
+                new Label(String.valueOf(bidService.getNumberOfCreatedBids()), "SideCommandNumber"));
         bidsContainer.setLeadComponent(myBidsButton);
         bidsContainer.setUIID("SideCommand");
-        myBidsButton.addActionListener(e -> new DisplayBids(res).show());
+        myBidsButton.addActionListener(e -> new ListBids(res).show());
         getToolbar().addComponentToSideMenu(bidsContainer);
+        
+        Button myBookmarksButton = new Button("Bookmarks", inboxImage);
+        myBookmarksButton.setUIID("SideCommand");
+        myBookmarksButton.getAllStyles().setPaddingBottom(0);
+        Container bookmarksContainer = FlowLayout.encloseMiddle(myBookmarksButton, 
+                new Label("18", "SideCommandNumber"));
+        bookmarksContainer.setLeadComponent(myBookmarksButton);
+        bookmarksContainer.setUIID("SideCommand");
+        myBookmarksButton.addActionListener(e -> new ListBookmarks(res).show());
+        getToolbar().addComponentToSideMenu(bookmarksContainer);
+        
+        
+        Button myReviewsButton = new Button("Reviews", inboxImage);
+        myReviewsButton.setUIID("SideCommand");
+        myReviewsButton.getAllStyles().setPaddingBottom(0);
+        Container reviewsContainer = FlowLayout.encloseMiddle(myReviewsButton, 
+                new Label("18", "SideCommandNumber"));
+        reviewsContainer.setLeadComponent(myReviewsButton);
+        reviewsContainer.setUIID("SideCommand");
+        myReviewsButton.addActionListener(e -> new ListBookmarks(res).show());
+        getToolbar().addComponentToSideMenu(reviewsContainer);
+        
+        Button myJobsButton = new Button("Jobs", inboxImage);
+        myJobsButton.setUIID("SideCommand");
+        myJobsButton.getAllStyles().setPaddingBottom(0);
+        Container jobsContainer = FlowLayout.encloseMiddle(myJobsButton, 
+                new Label("18", "SideCommandNumber"));
+        jobsContainer.setLeadComponent(myJobsButton);
+        jobsContainer.setUIID("SideCommand");
+        myJobsButton.addActionListener(e -> new ListBookmarks(res).show());
+        getToolbar().addComponentToSideMenu(jobsContainer);
+        
+        Button myBidders = new Button("Bidders", inboxImage);
+        myBidders.setUIID("SideCommand");
+        myBidders.getAllStyles().setPaddingBottom(0);
+        Container biddersContainer = FlowLayout.encloseMiddle(myBidders, 
+                new Label("18", "SideCommandNumber"));
+        biddersContainer.setLeadComponent(myBidders);
+        biddersContainer.setUIID("SideCommand");
+        myBidders.addActionListener(e -> new DisplayBidders(res).getF().show());
+        getToolbar().addComponentToSideMenu(biddersContainer);
+        
+        
 
 
         getToolbar().addCommandToSideMenu("Calendar", calendarImage, e -> new CalendarForm(res).show());

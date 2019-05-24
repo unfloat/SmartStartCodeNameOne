@@ -8,19 +8,21 @@ package com.mycompany.gui.bookmark;
 import com.mycompany.gui.bid.*;
 import com.codename1.ui.Button;
 import com.codename1.ui.Form;
+import com.codename1.ui.Label;
 import com.codename1.ui.TextField;
+import com.codename1.ui.layouts.FlowLayout;
 import com.codename1.ui.util.Resources;
-import com.mycompany.service.BidService;
-import com.mycompany.Entite.Bid;
+import com.mycompany.Entite.Bookmark;
+import com.mycompany.gui.BaseForm;
 import com.mycompany.gui.views.Home;
+import com.mycompany.service.BookmarkService;
 
 /**
  *
  * @author asus
  */
-public class AddBookmark {
+public class AddBookmark extends BaseForm {
 
-    Form f;
     TextField textDeliveryTime;
     TextField textMinimalRate;
 
@@ -28,53 +30,14 @@ public class AddBookmark {
         Resources res;
 
 
-    public AddBookmark() {
-        f = new Form("Add Bid");
-        f.getToolbar().addCommandToRightBar("back", null, (ev) -> {
-            Home h = new Home(res);
-            h.getF().show();
-        });
-        textDeliveryTime = new TextField();
-        textMinimalRate = new TextField();
-
-        btnajout = new Button("Ajouter");
-        btnaff = new Button("Affichage");
-        textDeliveryTime.setText("");
-        textDeliveryTime.setUIID("addField");
-        textDeliveryTime.setHint("DeliveryTime");
-
-        textMinimalRate.setText("");
-        textMinimalRate.setUIID("addField");
-        textMinimalRate.setHint("Minimal Rate");
-
-        f.add(textDeliveryTime);
-        f.add(textMinimalRate);
-
-        f.add(btnajout);
-        btnajout.addActionListener((e) -> {
-            BidService bidService = new BidService();
-            Bid bid = new Bid(Integer.valueOf(textDeliveryTime.getText()), Integer.valueOf(textMinimalRate.getText()));
-            bidService.addBid(bid);
-            textDeliveryTime.setText("");
-            textDeliveryTime.setUIID("addField");
-            textDeliveryTime.setHint("DeliveryTime");
-
-            textMinimalRate.setText("");
-            textMinimalRate.setUIID("addField");
-            textMinimalRate.setHint("Minimal Rate");
-
-            ShowBid showBid = new ShowBid(res,bid);
-            showBid.getF().show();
-        });
-
-    }
-
-    public Form getF() {
-        return f;
-    }
-
-    public void setF(Form f) {
-        this.f = f;
+    public AddBookmark(com.codename1.ui.util.Resources resourceObjectInstance, int projectId) {
+     getToolbar().setTitleComponent(
+                FlowLayout.encloseCenterMiddle(
+                        new Label("Add Project", "Title")                
+                )
+        ); 
+        installSidemenu(resourceObjectInstance);
+      
     }
 
     public TextField getMinimalRate() {

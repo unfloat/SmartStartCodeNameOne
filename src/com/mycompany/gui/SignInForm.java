@@ -1,19 +1,16 @@
 
 package com.mycompany.gui;
 
-import com.codename1.io.ConnectionRequest;
-import com.codename1.io.NetworkEvent;
-import com.codename1.io.NetworkManager;
 import com.codename1.ui.Dialog;
 import com.codename1.ui.FontImage;
 import com.codename1.ui.events.ActionEvent;
 import com.codename1.ui.events.ActionListener;
-import com.codename1.ui.plaf.Style;
-import com.mycompany.gui.bid.DisplayBids;
+import com.mycompany.gui.bid.ListBids;
+import com.mycompany.service.AuthenticationService;
 
 
 public class SignInForm extends com.codename1.ui.Form {
-
+AuthenticationService authenticationService = new AuthenticationService();
     public SignInForm() {
         this(com.codename1.ui.util.Resources.getGlobalResources());
     }
@@ -87,13 +84,14 @@ public class SignInForm extends com.codename1.ui.Form {
                 Dialog.show("Warning", "Please Fill in all fields ! ","OK",null);
             }
             
-            else if (username.getText().equals("freelancer") && password.getText().equals("freelancer"))
+            else if (username.getText().equals("1") && password.getText().equals("1"))
                 
             {
-                new DisplayBids(resourceObjectInstance).show();
+                System.out.println("signed in");
+                new ListBids(resourceObjectInstance).show();
             }  
             
-            else if (username.getText().equals("employer") && password.getText().equals("employer"))
+            else if (username.getText().equals("2") && password.getText().equals("2"))
                 
             {
                 new ListNotes(resourceObjectInstance).show();
